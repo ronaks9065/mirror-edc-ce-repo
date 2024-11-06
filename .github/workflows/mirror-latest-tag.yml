@@ -40,4 +40,5 @@ jobs:
         BRANCH: main
       run: |
         cd edc-ce.git
+        git pull
         git push "$DEST_REPO" "$BRANCH" "refs/tags/$latest_tag"
