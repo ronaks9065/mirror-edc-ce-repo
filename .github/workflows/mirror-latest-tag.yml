@@ -17,19 +17,19 @@ jobs:
 
       - name: Clone Mirror Repository
         run: |
-          git clone --mirror https://github.com/sovity/edc-ce.git source_mirror
+          git clone --mirror https://github.com/sovity/edc-ce.git
 
       - name: Get Latest Tag
         id: get_tag
         run: |
-          cd source_mirror
+          cd edc-ce.git
           latest_tag=$(git tag --sort=version:refname | tail -n 1)
           echo "Latest tag: $latest_tag"
           echo "tag_name=$latest_tag" >> $GITHUB_ENV
 
       - name: Push Latest Tag to Destination Repository
         run: |
-          cd source_mirror
+          cd edc-ce.git
           git fetch origin tag ${{ env.tag_name }}
           git push https://github.com/ronaks9065/mirror-edc-ce-repo.git "refs/tags/${{ env.tag_name }}"
           echo "Successfully mirrored the latest tag ${{ env.tag_name }} to the destination repository."
