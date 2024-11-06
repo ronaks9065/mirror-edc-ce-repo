@@ -29,9 +29,10 @@ jobs:
 
       - name: Push Latest Tag to Destination Repository
         env:
-          MIRROR_REPO_TOKEN: ${{ secrets.MIRROR_REPO_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd edc-ce.git
           git fetch origin tag ${{ env.tag_name }}
-          git push https://$MIRROR_REPO_TOKEN@github.com/ronaks9065/mirror-edc-ce-repo.git "refs/tags/${{ env.tag_name }}"
+          git remote set-url origin https://$GITHUB_TOKEN@github.com/ronaks9065/mirror-edc-ce-repo.git
+          git push origin "refs/tags/${{ env.tag_name }}"
           echo "Successfully mirrored the latest tag ${{ env.tag_name }} to the destination repository."
