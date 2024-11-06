@@ -17,7 +17,7 @@ jobs:
 
       - name: Clone Repository
         run: |
-          git clone https://github.com/sovity/edc-ce.git
+          git clone https://github.com/sovity/edc-ce.git edc-ce
 
       - name: Get Latest Tag
         id: get_tag
@@ -29,10 +29,10 @@ jobs:
 
       - name: Push Latest Tag to Destination Repository
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MIRROR_REPO_TOKEN: ${{ secrets.MIRROR_REPO_TOKEN }}
         run: |
           cd edc-ce
           git fetch origin tag ${{ env.tag_name }}
-          git remote set-url origin https://$GITHUB_TOKEN@github.com/ronaks9065/mirror-edc-ce-repo.git
+          git remote set-url origin https://$MIRROR_REPO_TOKEN@github.com/ronaks9065/mirror-edc-ce-repo.git
           git push origin "refs/tags/${{ env.tag_name }}"
           echo "Successfully mirrored the latest tag ${{ env.tag_name }} to the destination repository."
