@@ -31,5 +31,5 @@ jobs:
         run: |
           cd edc-ce.git
           git fetch origin tag ${{ env.tag_name }}
-          git push https://github.com/ronaks9065/mirror-edc-ce-repo.git "refs/tags/${{ env.tag_name }}"
+          git push https://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@github.com/ronaks9065/mirror-edc-ce-repo.git "refs/tags/${{ env.tag_name }}"
           echo "Successfully mirrored the latest tag ${{ env.tag_name }} to the destination repository."
