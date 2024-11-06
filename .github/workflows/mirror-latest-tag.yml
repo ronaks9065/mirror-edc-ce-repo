@@ -1,0 +1,35 @@
+name: Mirror Latest Tag
+
+on:
+  schedule:
+    - cron: "0 * * * *"  # Runs every hour; adjust as needed
+  workflow_dispatch:       # Allows manual triggering
+
+jobs:
+  mirror_latest_tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Git
+        run: |
+          git config --global user.name "YourGitHubUsername"
+          git config --global user.email "YourEmail@example.com"
+
+      - name: Clone Mirror Repository
+        run: |
+          git clone --mirror https://github.com/sovity/edc-ce.git source_mirror
+
+      - name: Get Latest Tag
+        id: get_tag
+        run: |
+          cd source_mirror
+          latest_tag=$(git tag --sort=version:refname | tail -n 1)
+          echo "Latest tag: $latest_tag"
+          echo "tag_name=$latest_tag" >> $GITHUB_ENV
+
+      - name: Push Latest Tag to Destination Repository
+        run: |
+          cd source_mirror
+          git fetch origin tag ${{ env.tag_name }}
+          git push https://github.com/ronaks9065/mirror-edc-ce-repo.git "refs/tags/${{ env.tag_name }}"
+          echo "Successfully mirrored the latest tag ${{ env.tag_name }} to the destination repository."
